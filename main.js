@@ -37,7 +37,52 @@ menuLi.addEventListener("click", function () {
   }
 });
 
+// Hide menu
+document.addEventListener("click", function (event) {
+  // Check if the click target is not inside the menu or menuLi
+  if (!menu.contains(event.target) && !menuLi.contains(event.target)) {
+    menu.style = "opacity: 0; z-index: -1; top: calc(100% + 50px);";
+  }
+});
+
+// Date
 const date = document.querySelectorAll(".date");
 date.forEach((e) => {
   e.innerHTML = new Date().getFullYear();
 });
+
+const stats = document.querySelector(".stats");
+const statsNum = document.querySelectorAll(".stats .number");
+
+let startCount = false;
+// animation on scroll
+window.onscroll = function () {
+  //skills section
+  const skills = document.querySelector(".skills");
+  const progressSpan = document.querySelectorAll(".progress span");
+  if (window.scrollY >= skills.offsetTop - 150) {
+    progressSpan.forEach((e) => {
+      e.style.width = e.dataset.width;
+    });
+  }
+
+  // stats section
+  if (window.scrollY >= stats.offsetTop - 200) {
+    if (!startCount) {
+      statsNum.forEach((e) => {
+        statsCount(e);
+      });
+    }
+    startCount = true;
+  }
+};
+
+function statsCount(e) {
+  let num = e.dataset.stats;
+  let interval = setInterval(() => {
+    e.textContent++;
+    if (e.textContent == num) {
+      clearInterval(interval);
+    }
+  }, 1);
+}
